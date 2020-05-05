@@ -82,6 +82,7 @@ async function handleSubmit(event) {
 async function handleSave(event) {
     event.preventDefault()
     await postData('/save', { data });
+    $('#tripModal').modal('toggle');
 }
 
 //constants 
@@ -150,14 +151,13 @@ async function getCityImage(cityData) {
 async function processWeather(forecaseInfo, startDate) {
 
     console.log("::processWeather:::")
-    console.log(forecaseInfo);
-    console.log(startDate);
+    console.log('forecaseInfo', forecaseInfo);
+    console.log('currentDate', startDate);
 
 
     let obj = forecaseInfo.find(o => o.valid_date === startDate);
     if (obj == undefined) {
-        let currentDate = new Date(Date.now()).toLocaleDateString('en-GB');
-        obj = forecaseInfo.find(o => o.valid_date === currentDate);
+        obj = forecaseInfo[0]
     }
     console.log("::obj ::", obj);
 
