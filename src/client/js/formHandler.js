@@ -1,3 +1,6 @@
+import { createModalUi } from './ui';
+const $ = require("jquery");
+
 async function handleSubmit(event) {
     event.preventDefault()
 
@@ -5,7 +8,7 @@ async function handleSubmit(event) {
     let city = document.getElementById('destination').value
     let start = document.getElementById('startDate').value
     let end = document.getElementById('endDate').value
-
+    let data = {};
 
     let res = await Client.checkForInput(city, start, end);
 
@@ -13,20 +16,53 @@ async function handleSubmit(event) {
         console.log("::: Form Submitted :::")
 
 
+        data.startDate = start;
+        data.endDate = end;
+        console.log("::: data-1 :::");
+        console.log(data);
+
+
         let cityInfo = await getCityData(city);
 
         console.log("::cityInfo:::")
         console.log(cityInfo);
+        console.log(data);
+
+        data.cityInfo = cityInfo;
 
         let weatherInfo = await getWeatherForeCast(cityInfo.Lat, cityInfo.Lng);
 
         console.log("::weatherInfo:::")
         console.log(weatherInfo);
 
-        let cityImage = await getCityImage(city);
+        data.weatherInfo = weatherInfo;
 
+        let cityImage = await getCityImage(data.cityInfo);
+
+        if (cityImage == undefined) {
+            cityImage = await getCountryImage(data.cityInfo);
+        }
         console.log("::cityImage:::")
         console.log(cityImage);
+
+
+        data.imageUrl = cityImage;
+        //get the DOM
+        const newTripBlock = document.getElementById('new-trip');
+        newTripBlock.innerHTML = '';
+
+        //display the newTripBlock in the browser
+
+        console.log("::data-2:::")
+        console.log(data)
+
+        let newModal = await createModalUi(data);
+
+        console.log("::after createModalUi:::")
+        console.log(newModal.innerHTML);
+        newTripBlock.innerHTML = newModal.innerHTML;
+
+        $('#tripModal').modal('show');
 
     }
 
@@ -54,8 +90,10 @@ async function getCityData(city) {
         if (data.totalResultsCount == 0) {
             console.log("City not found")
         } else {
+            cityData.countryName = data.geonames[0].countryName;
             cityData.Lat = data.geonames[0].lat;
             cityData.Lng = data.geonames[0].lng;
+            cityData.name = data.geonames[0].name;
 
         }
         return cityData;
@@ -78,19 +116,26 @@ async function getWeatherForeCast(lat, lon) {
     }
 }
 
-async function getCityImage(city) {
+async function getCityImage(cityData) {
 
-    const res = await fetch(pixbayUrl + pixabayKey + '&q=' + city + '&image_type=photo&pretty=true&category=places')
+    let imageUrl;
+    const res = await fetch(pixbayUrl + pixabayKey + '&q=' + cityData.name + '&image_type=photo')
     try {
         const data = await res.json();
-        console.log("getCityImage: no error: ", data);
-
-        return data;
+        console.log(data)
+        if (data.totalHits > 0) {
+            imageUrl = data.hits[0].webformatURL;
+        }
+        return imageUrl;
     } catch (error) {
         console.log("getCityImage: error", error);
         // appropriately handle the error
     }
 }
+
+
+
+
 
 
 
