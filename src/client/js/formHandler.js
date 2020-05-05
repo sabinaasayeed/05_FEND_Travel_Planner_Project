@@ -14,7 +14,7 @@ async function handleSubmit(event) {
 
     let res = await Client.checkForInput(city, start, end);
 
-    if (res) {
+    if (!res) {
         console.log("::: Form Submitted :::")
 
 
@@ -118,6 +118,7 @@ async function getCityData(city) {
     }
 }
 
+
 async function getWeatherForeCast(lat, lon) {
     const res = await fetch(weatherUrl + '&lat=' + lat + '&lon=' + lon + weatherKey)
     try {
@@ -168,17 +169,14 @@ async function processWeather(forecaseInfo, startDate) {
 }
 
 
-async function daysDiff(start, end) {
+export async function daysDiff(start, end) {
 
     console.log("::daysDiff:::")
     let d1 = new Date(start);
-    console.log('d1', d1)
     let d2 = new Date(end);
-    console.log('d2', d2)
+
 
     const diffTime = Math.abs(d2 - d1);
-    console.log('diffTime', diffTime)
-
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     console.log('diffDays', diffDays);
     return diffDays;
@@ -208,4 +206,4 @@ async function postData(url = '', data = {}) {
 
 
 
-export { handleSubmit, handleSave }
+export { handleSubmit, handleSave, getCityData }
