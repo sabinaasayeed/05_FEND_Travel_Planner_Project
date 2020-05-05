@@ -1,6 +1,8 @@
 import { createModalUi } from './ui';
 const $ = require("jquery");
 
+let data = {};
+
 async function handleSubmit(event) {
     event.preventDefault()
 
@@ -8,7 +10,7 @@ async function handleSubmit(event) {
     let city = document.getElementById('destination').value
     let start = document.getElementById('startDate').value
     let end = document.getElementById('endDate').value
-    let data = {};
+
 
     let res = await Client.checkForInput(city, start, end);
 
@@ -20,6 +22,11 @@ async function handleSubmit(event) {
         data.endDate = end;
         console.log("::: data-1 :::");
         console.log(data);
+
+        let diff = await daysDiff(start, end)
+        console.log(diff)
+        data.duration = diff;
+
 
 
         let cityInfo = await getCityData(city);
@@ -35,7 +42,10 @@ async function handleSubmit(event) {
         console.log("::weatherInfo:::")
         console.log(weatherInfo);
 
-        data.weatherInfo = weatherInfo;
+        let weather = await processWeather(weatherInfo.data, start)
+        console.log("::weather::", weather)
+
+        data.weather = weather;
 
         let cityImage = await getCityImage(data.cityInfo);
 
@@ -66,8 +76,12 @@ async function handleSubmit(event) {
 
     }
 
+}
 
 
+async function handleSave(event) {
+    event.preventDefault()
+    await postData('/save', { data });
 }
 
 //constants 
@@ -133,10 +147,65 @@ async function getCityImage(cityData) {
     }
 }
 
+async function processWeather(forecaseInfo, startDate) {
+
+    console.log("::processWeather:::")
+    console.log(forecaseInfo);
+    console.log(startDate);
+
+
+    let obj = forecaseInfo.find(o => o.valid_date === startDate);
+    if (obj == undefined) {
+        let currentDate = new Date(Date.now()).toLocaleDateString('en-GB');
+        obj = forecaseInfo.find(o => o.valid_date === currentDate);
+    }
+    console.log("::obj ::", obj);
+
+
+    return obj;
+
+
+}
+
+
+async function daysDiff(start, end) {
+
+    console.log("::daysDiff:::")
+    let d1 = new Date(start);
+    console.log('d1', d1)
+    let d2 = new Date(end);
+    console.log('d2', d2)
+
+    const diffTime = Math.abs(d2 - d1);
+    console.log('diffTime', diffTime)
+
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log('diffDays', diffDays);
+    return diffDays;
+}
+
+async function postData(url = '', data = {}) {
+    // console.log(data)
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data), // body data type must match "Content-Type" header        
+    });
+
+    try {
+        const newData = await response.json();
+        console.log(newData);
+        return newData
+    } catch (error) {
+        console.log("error", error);
+        // appropriately handle the error
+    }
+}
 
 
 
 
-
-
-export { handleSubmit }
+export { handleSubmit, handleSave }
