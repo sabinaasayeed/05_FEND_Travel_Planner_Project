@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../../../dist/main.js"></script>
     <title>Travel App</title>
 </head>
@@ -26,11 +27,11 @@
                                     <input type="text" class="form-control" id="destination" placeholder="Destination" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="startDate" class="control-label">Start Date</label>
+                                    <label for="startDate" class="control-label">Departure  Date</label>
                                     <input type="date" class="form-control" id="startDate" placeholder="StartDate" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="endDate" class="control-label">End Date</label>
+                                    <label for="endDate" class="control-label">Return Date</label>
                                     <input type="date" class="form-control" id="endDate" placeholder="EndDate" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-lg" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">Search</button>
@@ -41,7 +42,9 @@
             </div>
         </div>
     </section>
-
+    <section id="new-trip" class="new-trip">
+        <!-- here will be new-trip__location block added by JS -->
+    </section>
     <div class=" jumbotron text-center bg-secondary text-white " style="margin-bottom:0 ">
         <p>@explore</p>
     </div>
