@@ -5,7 +5,7 @@ describe("Input Name Check Warning", () => {
 
     test("it checks for Invalid input", () => {
         global.alert = jest.fn();
-        expect(checkForInput('paris', '2020-05-05', '2020-05-07')).toBe(0);
+        expect(checkForInput('paris', '2020-07-05', '2020-07-07')).toBe(0);
 
     });
 
