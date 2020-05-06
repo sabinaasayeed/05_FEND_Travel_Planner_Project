@@ -9,7 +9,7 @@
 * [Other requirements implemented](#Other)
 
 # Overview
-This is a project Front End Udacity Capstone Project that incorporates  of the Front End skills learned. Utilize multiple APIs to present a user with all they need to know about their trip.
+This is a project Front End Udacity Capstone Project that incorporates all of the Front End skills learned. Utilize multiple APIs to present a user with all they need to know about their trip.
 
 # Description
 
