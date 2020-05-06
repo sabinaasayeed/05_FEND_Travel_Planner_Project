@@ -34,4 +34,4 @@ function addTrip(req, res) {
 };
 
 
-export { app };
+module.exports = app;
