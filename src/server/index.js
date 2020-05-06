@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 
 // designates what port the app will listen to for incoming requests
 app.listen(3040, function() {
-    //console.log('Example app listening on port 3040!')
+    console.log('Example app listening on port 3040!')
 })
 
 
@@ -27,9 +27,9 @@ app.listen(3040, function() {
 app.post('/save', addTrip);
 
 function addTrip(req, res) {
-    //console.log('received save request: addTrip');
+    console.log('received save request: addTrip');
     trips.push(req.body)
-        //console.log(trips);
+    console.log(trips);
     res.send(trips);
 };
 
