@@ -16,3 +16,11 @@ export {
 }
 
 console.log(checkForInput);
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const searchBtn = document.getElementById('search');
+    searchBtn.addEventListener('click', handleSubmit);
+
+
+})
