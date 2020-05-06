@@ -1,9 +1,9 @@
-const request = require('supertest');
-import { app } from '../server/index'
+const request = require('supertest')
+const app = require('../server/index')
 
-describe('Express Endpoints', () => {
+describe('GET Endpoints', () => {
 
-    it('/ should route to index.html', async() => {
+    it('should route to index.html', async() => {
         const res = await request(app)
             .get('/')
             .send('./dist/index.html')
