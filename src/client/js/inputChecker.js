@@ -38,7 +38,13 @@ export function checkForInput(cityName, startDate, endDate) {
 
 
 export function isFutureDate(date) {
-    return (Math.ceil((new Date(date) - Date.now()) / (1000 * 60 * 60 * 24)) >= 0);
+    let d1 = new Date(date).setHours(0, 0, 0, 0);
+    let current = new Date(date).setHours(0, 0, 0, 0);
+    console.log('d1', d1);
+    console.log('now', current);
+
+    return d1 >= current;
+
 }
 
 
